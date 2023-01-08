@@ -6,32 +6,34 @@ const { db } = require('./firebase.js')
 
 app.use(express.json())
 
-const friends = {
-    'james': 'friend',
-    'larry': 'friend',
-    'lucy': 'friend',
-    'banana': 'enemy',
-}
-
-app.get('/friends', async (req, res) => {
-    const peopleRef = db.collection('people').doc('associates')
-    const doc = await peopleRef.get()
+// GET Method
+app.get('/people', async (req, res) => {
+    const all_people = db.collection('people')
+    const doc = await all_people.get()
     if (!doc.exists) {
         return res.sendStatus(400)
     }
-
-    res.status(200).send(doc.data())
+    await querySnapshot.forEach((doc) => {
+        res.status(200).send(doc.data())
+    })
 })
 
-app.get('/friends/:name', (req, res) => {
-    const { name } = req.params
-    if (!name || !(name in friends)) {
-        return res.sendStatus(404)
+app.get('/login', async (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+    const account = await db.collection('people')
+    const account_data = account.get().data()
+
+    if (username!=account_data.username || !password!=account_data.password) {
+        console.log(account)
+        return res.status(404).send('Username/Password incorrect, please login again !')
     }
-    res.status(200).send({ [name]: friends[name] })
+    else res.status(200).send('Login successfully, thank you !')
 })
 
-app.post('/addfriend', async (req, res) => {
+
+// POST Method
+app.post('/addpeople', async (req, res) => {
     const { name, status } = req.body
     const peopleRef = db.collection('people').doc('associates')
     const res2 = await peopleRef.set({
@@ -41,15 +43,20 @@ app.post('/addfriend', async (req, res) => {
     res.status(200).send(friends)
 })
 
-app.patch('/changestatus', async (req, res) => {
-    const { name, newStatus } = req.body
-    const peopleRef = db.collection('people').doc('associates')
-    const res2 = await peopleRef.set({
-        [name]: newStatus
-    }, { merge: true })
-    // friends[name] = newStatus
-    res.status(200).send(friends)
+app.post('/register', async (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+    const fullname = req.body.fullname
+    const account = db.collection('people')
+    await account.add({
+        ['username']: username,
+        ['password']: password,
+        ['Full name']: fullname
+    }, {merge: false})
+    res.status(200).send('Register successfully !')
 })
+
+// DELETE Method
 
 app.delete('/friends', async (req, res) => {
     const { name } = req.body
