@@ -1,12 +1,13 @@
-const { initializeApp, cert } = require('firebase-admin/app')
+const admin = require('firebase-admin')
 const { getFirestore } = require('firebase-admin/firestore')
 
 const serviceAccount = require('./creds.json')
 
-initializeApp({
-    credential: cert(serviceAccount)
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://${serviceAccount.project_id}.firebaseio.com',
 })
 
-const db = getFirestore()
+const db = admin.firestore()
 
-module.exports = { db }
+module.exports = { admin, db }
