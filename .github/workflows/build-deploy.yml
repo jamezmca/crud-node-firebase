@@ -1,0 +1,90 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    env:
+      AWS_REGION: ap-southeast-1
+      AWS_ECR_ROLE: RoleToPushToTrungECR
+    runs-on: ubuntu-20.04
+    outputs:
+      ci-image-tag: ${{ steps.build-image.outputs.image }}
+    steps:
+      # checkout
+      - uses: actions/checkout@v2
+      # configure AWS cred
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID  }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ECR_ROLE }}
+          mask-aws-account-id: 'no'
+          role-skip-session-tagging: true
+          role-duration-seconds: 2700
+      # login to ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      # build and deploy image to ECR
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: trung/cnpm-20221-be
+        run: |
+          IMAGE_TAG=dev-latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+  deploy:
+    needs:
+      - build
+    env:
+      AWS_REGION: ap-southeast-1
+      AWS_ECS_ROLE: RoleToDeployToTrungECS
+      APP_NAME: trung-cnpm-20221-be
+      CONTAINER_NAME: trung-cnpm-2021-be
+      AWS_ECS_CLUSTER: trung-owned-cluster
+    runs-on: ubuntu-20.04
+    outputs:
+      ci-image-tag: ${{ steps.build-image.outputs.image }}
+    steps:
+      # checkout
+      - uses: actions/checkout@v2
+      # configure AWS creds
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID  }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ECS_ROLE }}
+          mask-aws-account-id: 'no'
+          role-skip-session-tagging: true
+          role-duration-seconds: 2700
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition $APP_NAME --query taskDefinition > task-definition.json
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ needs.build.outputs.ci-image-tag }}
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.APP_NAME }}
+          cluster: ${{ env.AWS_ECS_CLUSTER }}

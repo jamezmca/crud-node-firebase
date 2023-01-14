@@ -6,6 +6,12 @@ const { db } = require('./firebase.js')
 
 app.use(express.json())
 
+app.get('/health', (req, res) => {
+    return res.status(200).json({
+        message: 'Ok healthy'
+    });
+})
+
 // GET Method
 app.get('/people', async (req, res) => {
     const all_people = db.collection('people')
