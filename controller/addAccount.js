@@ -3,7 +3,7 @@ const {db} = require('../config/firebase');
 module.exports.addAccount = async (req, res) => {
   const {username, password, fullname} = req.body;
   try {
-    const entry = db.collection('people').doc();
+    const entry = db.collection('account').doc();
     const peopleObject = {
       id: entry.id,
       username,

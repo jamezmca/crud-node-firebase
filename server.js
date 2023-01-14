@@ -4,6 +4,7 @@ const app = express()
 const port = 8383
 const { db } = require('./config/firebase.js')
 const {addAccount} = require('./controller/addAccount');
+const {getAllAccount} = require('./controller/getAccount')
 
 app.use(express.json())
 
@@ -14,16 +15,7 @@ app.get('/health', (req, res) => {
 })
 
 // GET Method
-app.get('/people', async (req, res) => {
-    const all_people = db.collection('people')
-    const doc = await all_people.get()
-    if (!doc.exists) {
-        return res.sendStatus(400)
-    }
-    await querySnapshot.forEach((doc) => {
-        res.status(200).send(doc.data())
-    })
-})
+app.get('/allpeople', getAllAccount)
 
 app.get('/login', async (req, res) => {
     const username = req.body.username
