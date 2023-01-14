@@ -2,7 +2,8 @@ const express = require('express')
 const { FieldValue } = require('firebase-admin/firestore')
 const app = express()
 const port = 8383
-const { db } = require('./firebase.js')
+const { db } = require('./config/firebase.js')
+const {addAccount} = require('./controller/addAccount');
 
 app.use(express.json())
 
@@ -49,18 +50,7 @@ app.post('/addpeople', async (req, res) => {
     res.status(200).send(friends)
 })
 
-app.post('/register', async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
-    const fullname = req.body.fullname
-    const account = db.collection('people')
-    await account.add({
-        ['username']: username,
-        ['password']: password,
-        ['Full name']: fullname
-    }, {merge: false})
-    res.status(200).send('Register successfully !')
-})
+app.post('/register', addAccount)
 
 // DELETE Method
 
