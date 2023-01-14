@@ -5,7 +5,7 @@ const port = 8383
 const { db } = require('./config/firebase.js')
 const {addAccount} = require('./controller/addAccount');
 const {getAllAccount} = require('./controller/getAccount')
-
+const {login} = require('./controller/login')
 app.use(express.json())
 
 app.get('/health', (req, res) => {
@@ -17,18 +17,7 @@ app.get('/health', (req, res) => {
 // GET Method
 app.get('/allpeople', getAllAccount)
 
-app.get('/login', async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
-    const account = await db.collection('people')
-    const account_data = account.get().data()
-
-    if (username!=account_data.username || !password!=account_data.password) {
-        console.log(account)
-        return res.status(404).send('Username/Password incorrect, please login again !')
-    }
-    else res.status(200).send('Login successfully, thank you !')
-})
+app.get('/login', login)
 
 
 // POST Method
