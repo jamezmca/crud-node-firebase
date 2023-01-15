@@ -6,6 +6,9 @@ const { db } = require('./config/firebase.js')
 const {addAccount} = require('./controller/addAccount');
 const {getAllAccount} = require('./controller/getAccount')
 const {login} = require('./controller/login')
+const {addchiphi} = require('./controller/addChiPhi')
+const {addnhankhau} = require('./controller/addNhanKhau')
+const {addhokhau} = require('./controller/addHoKhau')
 app.use(express.json())
 
 app.get('/health', (req, res) => {
@@ -32,6 +35,9 @@ app.post('/addpeople', async (req, res) => {
 })
 
 app.post('/register', addAccount)
+app.post('/addchiphi',addchiphi)
+app.post('/addnhankhau',addnhankhau)
+app.post('/addhokhau',addhokhau)
 
 // DELETE Method
 
