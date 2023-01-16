@@ -35,9 +35,15 @@ app.post('/addpeople', async (req, res) => {
 })
 
 app.post('/register', addAccount)
-app.post('/addchiphi',addchiphi)
-app.post('/addnhankhau',addnhankhau)
-app.post('/addhokhau',addhokhau)
+app.post('/addchiphi',(res,req)=>{
+    addchiphi
+})
+app.post('/addnhankhau',(res,req)=>{
+    addnhankhau
+})
+app.post('/addhokhau',(res,req)=>{
+    addhokhau
+})
 
 // DELETE Method
 
