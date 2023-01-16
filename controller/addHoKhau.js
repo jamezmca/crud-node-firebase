@@ -3,7 +3,7 @@ const {db} = require('../config/firebase');
 module.exports.addHoKhau = async (req, res) => {
   const {maho,IDchuho,sothanhvien,diachi} = req.body;
   try {
-    const entry = db.collection('hokhau');
+    const entry = db.collection('hokhau').doc();
     const peopleObject = {
       maho,
       IDchuho,
