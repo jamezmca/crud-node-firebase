@@ -1,6 +1,7 @@
 const express = require('express')
 const { FieldValue } = require('firebase-admin/firestore')
 const app = express()
+const cors = require('cors');
 const port = 8383
 const { db } = require('./config/firebase.js')
 const {addAccount} = require('./controller/addAccount');
