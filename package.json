@@ -1,13 +1,14 @@
 {
   "name": "crud-node-firebase",
   "version": "1.0.0",
-  "description": "",
+  "description": "CRUD node.js + firebase tutorial",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
     "build": "echo \"Do nothing\"",
     "start:prod": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +22,13 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CNPM-20221/crud-node-firebase.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CNPM-20221/crud-node-firebase/issues"
+  },
+  "homepage": "https://github.com/CNPM-20221/crud-node-firebase#readme"
 }
