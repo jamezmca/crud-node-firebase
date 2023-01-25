@@ -23,7 +23,7 @@ app.get('/health', (req, res) => {
 // GET Method
 app.get('/allpeople', getAllAccount)
 
-app.get('/login', login)
+app.post('/login', login)
 
 
 // POST Method
