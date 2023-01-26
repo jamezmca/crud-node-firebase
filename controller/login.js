@@ -15,8 +15,8 @@ module.exports.login = async (req, res) => {
             all_match = doc.data()
         })
         if (querySnapshot.size!=0) {
-            const token = jwt.sign(all_match.id, "SUPPER_SERRECT_KEY")
-            res.cookie('token', token, { httpOnly: true })
+            const token = jwt.sign(all_match.id, "SUPER_SERRECT_KEY")
+            res.cookie('token', token)
             res.status(200).send({
                 message: "Login successfully !",
                 token: token,

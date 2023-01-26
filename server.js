@@ -3,15 +3,17 @@ const { FieldValue } = require('firebase-admin/firestore')
 const app = express()
 const cors = require('cors');
 const port = 8383
+const cookieParser = require('cookie-parser')
 const { db } = require('./config/firebase.js')
 const {addAccount} = require('./controller/addAccount');
 const {getAllAccount} = require('./controller/getAccount')
 const {login} = require('./controller/login')
+const {check,logout} = require('./controller/logout')
 const {addChiPhi} = require('./controller/addChiPhi')
 const {addNhanKhau} = require('./controller/addNhanKhau')
 const {addHoKhau} = require('./controller/addHoKhau')
 app.use(express.json())
-
+app.use(cookieParser())
 app.use(cors())
 
 app.get('/health', (req, res) => {
@@ -22,8 +24,9 @@ app.get('/health', (req, res) => {
 
 // GET Method
 app.get('/allpeople', getAllAccount)
-
-app.post('/login', login)
+app.get('/login', (req,res) => {
+    res.json("This is login page. Please login to continue!")
+})
 
 
 // POST Method
@@ -38,9 +41,11 @@ app.post('/addpeople', async (req, res) => {
 })
 
 app.post('/register', addAccount)
-app.post('/addchiphi',addChiPhi)
-app.post('/addnhankhau',addNhanKhau)
-app.post('/addhokhau',addHoKhau)
+app.post('/addchiphi',check, addChiPhi)
+app.post('/addnhankhau',check, addNhanKhau)
+app.post('/addhokhau',check, addHoKhau)
+app.post('/login', login)
+app.post('/logout', check, logout)
 
 // DELETE Method
 
