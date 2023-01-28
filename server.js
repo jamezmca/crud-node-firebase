@@ -12,6 +12,9 @@ const {check,logout} = require('./controller/logout')
 const {addChiPhi} = require('./controller/addChiPhi')
 const {addNhanKhau} = require('./controller/addNhanKhau')
 const {addHoKhau} = require('./controller/addHoKhau')
+const {chiphi_pagination} = require('./controller/getChiPhi')
+const {hokhau_pagination} = require('./controller/getHoKhau')
+const {nhankhau_pagination} = require('./controller/getNhanKhau')
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
@@ -29,6 +32,9 @@ app.get('/login', (req,res) => {
 })
 
 app.get('/pageaccount', account_pagination)
+app.get('/pagechiphi',chiphi_pagination)
+app.get('/pagehokhau',hokhau_pagination)
+app.get('/pagenhankhau',nhankhau_pagination)
 
 
 // POST Method
