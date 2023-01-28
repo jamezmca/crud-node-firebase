@@ -6,7 +6,7 @@ const port = 8383
 const cookieParser = require('cookie-parser')
 const { db } = require('./config/firebase.js')
 const {addAccount} = require('./controller/addAccount');
-const {getAllAccount} = require('./controller/getAccount')
+const {getAllAccount, account_pagination} = require('./controller/getAccount')
 const {login} = require('./controller/login')
 const {check,logout} = require('./controller/logout')
 const {addChiPhi} = require('./controller/addChiPhi')
@@ -27,6 +27,8 @@ app.get('/allpeople', getAllAccount)
 app.get('/login', (req,res) => {
     res.json("This is login page. Please login to continue!")
 })
+
+app.get('/pageaccount', account_pagination)
 
 
 // POST Method
