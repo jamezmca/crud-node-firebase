@@ -1,17 +1,18 @@
 const {db} = require('../config/firebase');
 
 module.exports.addNhanKhau = async (req, res) => {
-  const {cmnd,fullname,age,phone,maho} = req.body;
+  const {id,cmnd,fullname,age,phone,maho} = req.body;
   try {
-    const entry = db.collection('nhankhau').doc();
+    const id=req.body.id
     const peopleObject = {
-      id: entry.id,
+      id,
       cmnd,
       fullname,
       age,
       phone,
       maho
     };
+    const entry = db.collection('nhankhau').doc(id);
     entry.set(peopleObject);
         res.status(200).send({
           status: 'success',
