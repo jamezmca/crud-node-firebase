@@ -9,7 +9,7 @@ module.exports.addHoKhau = async (req, res) => {
       IDchuho,
       maho,
       sothanhvien,
-      diachi,
+      diachi
     }
     const entry = db.collection('hokhau').doc(id);
     entry.set(peopleObject);

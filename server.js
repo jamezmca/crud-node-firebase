@@ -22,6 +22,11 @@ const {deleteChiPhi} =require('./controller/deleteChiPhi')
 const {deleteHoKhau} =require('./controller/deleteHoKhau')
 const {deleteNhanKhau} = require('./controller/deleteNhanKhau')
 const {deleteAccount} =require('./controller/deleteAccount')
+// Import update function
+const {updateAccount} = require('./controller/updateAcount')
+const {updateChiPhi} = require('./controller/updateChiPhi')
+const {updateHoKhau} = require('./controller/updateHoKhau')
+const {updateNhanKhau} = require('./controller/updateNhanKhau')
 //Import middleware function
 const {checkLogin} = require('./middleware/checkLogin')
 
@@ -58,6 +63,11 @@ app.post('/login', login)
 app.post('/logout', checkLogin, logout)
 
 // PUT Method
+app.put('/updateaccount/:id',updateAccount)
+app.put('/updateChiPhi/:id',updateChiPhi)
+app.put('/updateHoKhau/:id',updateHoKhau)
+app.put('/updateNhanKhau/:id',updateNhanKhau)
+
 
 // DELETE Method
 app.delete('/deletechiphi/:id',deleteChiPhi)
