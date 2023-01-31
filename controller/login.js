@@ -17,6 +17,7 @@ module.exports.login = async (req, res) => {
         if (querySnapshot.size!=0) {
             const token = jwt.sign(all_match.id, "SUPER_SERRECT_KEY")
             res.cookie('token', token)
+            res.header('Authorization', 'Bearer '+ token);
             res.status(200).send({
                 message: "Login successfully !",
                 token: token,

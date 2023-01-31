@@ -8,7 +8,7 @@ const { db } = require('./config/firebase.js')
 // Import add fuction
 const {addAccount} = require('./controller/addAccount');
 const {login} = require('./controller/login')
-const {check,logout} = require('./controller/logout')
+const {logout} = require('./controller/logout')
 const {addChiPhi} = require('./controller/addChiPhi')
 const {addNhanKhau} = require('./controller/addNhanKhau')
 const {addHoKhau} = require('./controller/addHoKhau')
@@ -22,6 +22,8 @@ const {deleteChiPhi} =require('./controller/deleteChiPhi')
 const {deleteHoKhau} =require('./controller/deleteHoKhau')
 const {deleteNhanKhau} = require('./controller/deleteNhanKhau')
 const {deleteAccount} =require('./controller/deleteAccount')
+//Import middleware function
+const {check} = require('./middleware/checkLogin')
 
 app.use(express.json())
 app.use(cookieParser())
