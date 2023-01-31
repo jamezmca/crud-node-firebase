@@ -2,6 +2,7 @@ const {db} = require('../config/firebase');
 const size = 1
 
 module.exports.hokhau_pagination = async (req, res, next) => {
+    
     const page = parseInt(req.query.page)
     const first = await db.collection('hokhau').orderBy('IDchuho')
                         .limit(size*page)
