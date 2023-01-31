@@ -17,6 +17,11 @@ const {chiphi_pagination} = require('./controller/getChiPhi')
 const {hokhau_pagination} = require('./controller/getHoKhau')
 const {nhankhau_pagination} = require('./controller/getNhanKhau');
 const {getAllAccount, account_pagination} = require('./controller/getAccount')
+// Import detele fuction
+const {deleteChiPhi} =require('./controller/deleteChiPhi')
+const {deleteHoKhau} =require('./controller/deleteHoKhau')
+const {deleteNhanKhau} = require('./controller/deleteNhanKhau')
+const {deleteAccount} =require('./controller/deleteAccount')
 
 app.use(express.json())
 app.use(cookieParser())
@@ -37,7 +42,7 @@ app.get('/login', (req,res) => {
 app.get('/allpeople', getAllAccount)
 app.get('/pageaccount', account_pagination)
 app.get('/pagechiphi',chiphi_pagination)
-app.get('/pagehokhau',hokhau_pagination).
+app.get('/pagehokhau',hokhau_pagination)
 app.get('/pagenhankhau',nhankhau_pagination)
 
 
@@ -53,6 +58,10 @@ app.post('/logout', check, logout)
 // PUT Method
 
 // DELETE Method
+app.delete('/deletechiphi/:id',deleteChiPhi)
+app.delete('/deletehokhau/:id',deleteHoKhau)
+app.delete('/deletenhankhau/:id',deleteNhanKhau)
+app.delete('/deleteaccount/:id',deleteAccount)
 
 app.delete('/friends', async (req, res) => {
     const { name } = req.body
