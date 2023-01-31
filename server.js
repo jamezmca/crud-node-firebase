@@ -23,7 +23,7 @@ const {deleteHoKhau} =require('./controller/deleteHoKhau')
 const {deleteNhanKhau} = require('./controller/deleteNhanKhau')
 const {deleteAccount} =require('./controller/deleteAccount')
 //Import middleware function
-const {check} = require('./middleware/checkLogin')
+const {checkLogin} = require('./middleware/checkLogin')
 
 app.use(express.json())
 app.use(cookieParser())
@@ -51,11 +51,11 @@ app.get('/pagenhankhau',nhankhau_pagination)
 // POST Method
 
 app.post('/register', addAccount)
-app.post('/addchiphi',check, addChiPhi)
-app.post('/addnhankhau',check, addNhanKhau)
-app.post('/addhokhau',check, addHoKhau)
+app.post('/addchiphi',checkLogin, addChiPhi)
+app.post('/addnhankhau',checkLogin, addNhanKhau)
+app.post('/addhokhau',checkLogin, addHoKhau)
 app.post('/login', login)
-app.post('/logout', check, logout)
+app.post('/logout', checkLogin, logout)
 
 // PUT Method
 
@@ -65,13 +65,6 @@ app.delete('/deletehokhau/:id',deleteHoKhau)
 app.delete('/deletenhankhau/:id',deleteNhanKhau)
 app.delete('/deleteaccount/:id',deleteAccount)
 
-app.delete('/friends', async (req, res) => {
-    const { name } = req.body
-    const peopleRef = db.collection('people').doc('associates')
-    const res2 = await peopleRef.update({
-        [name]: FieldValue.delete()
-    })
-    res.status(200).send(friends)
-})
 
+//Start server
 app.listen(port, () => console.log(`Server has started on port: ${port}`))

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-module.exports.check = (req, res, next) =>
+module.exports.checkLogin = (req, res, next) =>
 {
     try {
         var token = req.cookies.token
