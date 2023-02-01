@@ -3,17 +3,18 @@ const {db} = require('../config/firebase');
 module.exports.addChiPhi = async (req, res) => {
   const {fullname,chiphi} = req.body;
   try {
-    const id= req.body.fullname
-    
+    const entry = db.collection('chiphi').doc();
     const peopleObject = {
+      id :entry.id,
       fullname,
       chiphi
+
     };
-    const entry = db.collection('chiphi').doc(id);
-    entry.set(peopleObject);
+      
+      entry.set(peopleObject);
         res.status(200).send({
           status: 'success',
-          message: 'Chi phi added, register successfully !',
+          message: 'ChiPhi added, register successfully !',
           data: peopleObject,
         });
   } catch (error) {

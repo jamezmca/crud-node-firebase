@@ -1,14 +1,19 @@
 const {db} = require('../config/firebase');
 
 module.exports.updateNhanKhau = async (req, res) => {
-  const {cmnd,fullname,age,phone,maho} = req.body;
+  const {name,chuHo,phone,maho,date,age,gender,identify,address,status} = req.body;
   try {
     const peopleObject = {
-        cmnd,
-        fullname,
-        age,
-        phone,
-        maho
+      name,
+      chuHo,
+      age,
+      phone,
+      maho,
+      date,
+      gender,
+      identify,
+      address,
+      status
       };
     const response = await db.collection('nhankhau').doc(req.params.id);
     response.set(peopleObject,{merge:true});

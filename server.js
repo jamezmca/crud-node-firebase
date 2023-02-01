@@ -57,7 +57,7 @@ app.get('/pagenhankhau',nhankhau_pagination)
 
 app.post('/register', addAccount)
 app.post('/addchiphi',checkLogin, addChiPhi)
-app.post('/addnhankhau',checkLogin, addNhanKhau)
+app.post('/addnhankhau', addNhanKhau)
 app.post('/addhokhau',checkLogin, addHoKhau)
 app.post('/login', login)
 app.post('/logout', checkLogin, logout)
