@@ -11,25 +11,32 @@ module.exports.getAllAccount = async (req, res) => {
   }
 };
 
-const size = 3
-
 module.exports.account_pagination = async (req, res, next) => {
-    try{
-      const page = parseInt(req.query.page)
-    const first = await db.collection('account').orderBy('id')
-                        .limit(size*page)
-                        .get()
-    const last = first.docs[first.docs.length - 1];
+  try{
+    let n_cursor = req.query.nextCursor
+    let size = parseInt(req.query.size)
     const list_account = []
-    const querydb = await db.collection('account').orderBy('id')
-                            .startAfter(last.data().id)
-                            .limit(size).get()
-    querydb.forEach((doc) => list_account.push(doc.data()))
-    return res.status(200).json(list_account)
-    } catch(error){
-      return res.status(500).json(error.message);
+    if (n_cursor) {
+      const querydb = await db.collection('account').orderBy('id')
+                              .startAt(n_cursor)
+                              .limit(size+1)
+                              .get()
+      querydb.forEach((doc) => list_account.push(doc.data()))
     }
-    
-    
+    else {
+      const querydb = await db.collection('account').orderBy('id')
+                              .limit(size+1)
+                              .get()
+      querydb.forEach((doc) => list_account.push(doc.data()))
+    }
+    return res.status(200).json({
+      data: list_account.slice(0,size),
+      nextCursor: list_account[size].id,
+      size: size   
+    })
+    } 
+  catch(error){
+      return res.status(500).json(error.message);
+    } 
 }
 
